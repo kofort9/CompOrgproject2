@@ -1,6 +1,11 @@
 .data 
     message: .asciiz "hello"
     userInput: .space 20
+    # add math
+    x: .word 2838581
+    n: .word 0
+    m: .word 0 
+    
 .text
     main:
     # Getting users input 
@@ -8,6 +13,7 @@
     la $a0, userInput
     la $a1, 4
     syscall 
+    
     
     # Display message
     li $v0, 4
