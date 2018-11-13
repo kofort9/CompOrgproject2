@@ -1,31 +1,27 @@
 .data 
-    stringStatus: .asciiz "Input is empty"
     userInput: .space 5
     # add math base 18?
-    invaildinputlengthmessage: .asciiz "Input is too long."
-    emptyinput: .asciiz "Input is empty."
-    invalidinput: .asciiz "    "
+    invaildInputLength: .asciiz "Input is too long."
+    emptyInput: .asciiz "Input is empty."
+    invalidInput: .asciiz "    "
 .text
     main:
     
         # Get input 1 byte
         li $v0, 8
         la $a0, userInput #loads adress user input  from memory and stores in regester a0
-        li $a1, 5 
+        li $a1, 16 
         syscall 
         
         li $t0, 0
         li $t1, 10
-        checksforemptychar: # checks for no input at all
-            lbu $t0, 0($a0)
-            beq $t0, $t1, inputempty
+        
         
         #need to check for input of spaces
   
         
         # conditional to check if the length of entered string is equal to 4 characters
-        #beqz $a0, inputempty
-        #bne $a0, $t0, stringtoolong
+        
         
         
         
@@ -78,17 +74,24 @@
             
  
         
-        stringtoolong:
+        stringTooLong:
+        la $a0, invaildInputLength
         li $v0, 4
-        la $a0, invaildinputlengthmessage 
-        syscall 
+        syscall
+        j exit
         
-    inputempty:
+    invalidInput        
+        la $a0, invalidInput
         li $v0, 4
-        la $a0, emptyinput
-        syscall 
+        syscall
+        j exit  
         
-    strlen: li $v0, -1   # $v0 has length - start at -1 
+    inputEmpty:
+        la $a0, emptyInput
+        li $v0, 4
+        syscall
+        j exit 
+        
         
         
     exit:
