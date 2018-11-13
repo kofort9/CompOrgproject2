@@ -4,7 +4,7 @@
     # add math base 18?
     invaildinputlengthmessage: .asciiz "Input is too long."
     emptyinput: .asciiz "Input is empty."
-    
+    invalidinput: .asciiz "    "
 .text
     main:
     
@@ -14,18 +14,22 @@
         li $a1, 5 
         syscall 
         
-        add $t0, $zero, 5
+        #add $t0, $zero, 5
         
         # conditional to check if the length of entered string is equal to 4 characters
         #beqz $a0, inputempty
         #bne $a0, $t0, stringtoolong
-    
-        li $v0, 4 
-        la $a0, userInput
-        syscall
+        
+        li $v0, 4
+        la $t0, invalidinput
+        syscall 
         
         beqz $a0, inputempty
-        bne $a0, $t0, stringtoolong
+        j exit
+        beq $a0,$t0, inputempty
+        j exit
+        
+        #bne $a0, $t0, stringtoolong
           
         
         la $t0, userInput # prints the input from the user
@@ -56,9 +60,9 @@
         
             j loop
             
-         
-            
-      stringtoolong:
+ 
+        
+    stringtoolong:
         li $v0, 4
         la $a0, invaildinputlengthmessage 
         syscall 
@@ -67,6 +71,7 @@
         li $v0, 4
         la $a0, emptyinput
         syscall 
+        
         
     exit:
         li $v0, 10 
