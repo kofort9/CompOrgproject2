@@ -28,9 +28,13 @@
   		addi $t0, $t0, 1
   		j stringLength
   		
-  	AfterStringLength:
-        
-        
+  	AfterStringLength: # new way to check if the string is empty
+        	la $t1, userInput
+ 		sub $t2, $t0, $t1
+  		addi $s0, $t2, -1
+        	
+        	beq $s0, $zero, inputEmpty 
+
         
         
         # prints input from user
