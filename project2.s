@@ -58,11 +58,15 @@
             
          
             
+      stringtoolong:
+        li $v0, 4
+        la $a0, invaildinputlengthmessage 
+        syscall 
         
-        
-        
-        
-        
+    inputempty:
+        li $v0, 4
+        la $a0, emptyinput
+        syscall 
         
     exit:
         li $v0, 10 
