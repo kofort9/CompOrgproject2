@@ -3,7 +3,7 @@
     # add math base 18?
     invaildInputLength: .asciiz "Input is too long."
     emptyInput: .asciiz "Input is empty."
-    invalidInput: .asciiz "    "
+    invalidInput: .asciiz "Invalid base-n number."
 .text
     main:
     
@@ -21,7 +21,14 @@
   
         
         # conditional to check if the length of entered string is equal to 4 characters
-        
+        la $t0, userInput
+	stringLength:
+ 		lb $t1, 0($t0)
+  		beq $t1, $zero, AfterStringLength
+  		addi $t0, $t0, 1
+  		j stringLength
+  		
+  	AfterStringLength:
         
         
         
@@ -73,14 +80,14 @@
             j loop
             
  
-        
-        stringTooLong:
+       # error messages 
+    stringTooLong:
         la $a0, invaildInputLength
         li $v0, 4
         syscall
         j exit
         
-    invalidInput        
+    inputInvalid:        
         la $a0, invalidInput
         li $v0, 4
         syscall
@@ -94,18 +101,7 @@
         
         
         
-    exit:
-        li $v0, 10 
-        syscall 
-    
-    
-    #label to print if string is empty
-    #stringEmpty:
-    #li $v0, 4
-    #la $a0, stringStatus
-    #syscall 
-    
-    # convert input to decimal
+     # convert input to decimal
     
     # convert imput to base 
     
@@ -114,3 +110,11 @@
     
     
     #end of program
+        
+    exit:
+        li $v0, 10 
+        syscall 
+    
+    
+    
+  
