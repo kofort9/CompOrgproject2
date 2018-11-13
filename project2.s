@@ -34,36 +34,6 @@
   		addi $s0, $t2, -1
         	
         	beq $s0, $zero, inputEmpty 
-
-        
-        
-        # prints input from user
-        #li $v0, 4 
-        #la $a0, userInput
-        #syscall
-        
-        #li $v0, 4
-        #la $t0, invalidinput
-        #syscall 
-        
-        # checking if the input is too long
-        #beqz $a0, inputempty
-        #j exit
-        #beq $t0,$v0, inputempty
-        #j exit
-        
-        #bne $a0, $t0, stringtoolong
-          
-        
-        #la $t0, userInput # prints  on char from the input from the user
-    #lb $a0, ($t0)
-    #li $v0, 11
-    #syscall
-        
-        
-        
-        
-        
         
     
         # loops thru input to check if it is good  
