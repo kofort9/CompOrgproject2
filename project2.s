@@ -14,28 +14,44 @@
         li $a1, 5 
         syscall 
         
-        #add $t0, $zero, 5
+        li $t0, 0
+        li $t1, 10
+        checksforemptychar: # checks for no input at all
+            lbu $t0, 0($a0)
+            beq $t0, $t1, inputempty
+        
+        #need to check for input of spaces
+  
         
         # conditional to check if the length of entered string is equal to 4 characters
         #beqz $a0, inputempty
         #bne $a0, $t0, stringtoolong
         
-        li $v0, 4
-        la $t0, invalidinput
-        syscall 
         
-        beqz $a0, inputempty
-        j exit
-        beq $a0,$t0, inputempty
-        j exit
+        
+        
+        # prints input from user
+        #li $v0, 4 
+        #la $a0, userInput
+        #syscall
+        
+        #li $v0, 4
+        #la $t0, invalidinput
+        #syscall 
+        
+        # checking if the input is too long
+        #beqz $a0, inputempty
+        #j exit
+        #beq $t0,$v0, inputempty
+        #j exit
         
         #bne $a0, $t0, stringtoolong
           
         
-        la $t0, userInput # prints the input from the user
-    lb $a0, ($t0)
-    li $v0, 11
-    syscall
+        #la $t0, userInput # prints  on char from the input from the user
+    #lb $a0, ($t0)
+    #li $v0, 11
+    #syscall
         
         
         
@@ -62,7 +78,7 @@
             
  
         
-    stringtoolong:
+        stringtoolong:
         li $v0, 4
         la $a0, invaildinputlengthmessage 
         syscall 
@@ -71,6 +87,8 @@
         li $v0, 4
         la $a0, emptyinput
         syscall 
+        
+    strlen: li $v0, -1   # $v0 has length - start at -1 
         
         
     exit:
