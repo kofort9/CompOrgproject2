@@ -1,9 +1,8 @@
 .data 
     userInput: .space 5
-    # add math base 18?
     invaildInputLength: .asciiz "Input is too long."
     emptyInput: .asciiz "Input is empty."
-    invalidInput: .asciiz "Invalid base-n number."
+    invalidInput: .asciiz "Invalid base-28 number."
 .text
     main:
     
@@ -24,16 +23,22 @@
         la $t0, userInput
 	stringLength:
  		lb $t1, 0($t0)
-  		beq $t1, $zero, AfterStringLength
+  		beq $t1, $zero, emptyCheck #  null input 
+  		beq $t1, 10, emptyCheck   # newline  input  
+  		beq $t1, 32, invalidCheck    # space input
+  		bne $t1, $zero,
+  		bne $t1, 10,
+  		bne $t1, 32
   		addi $t0, $t0, 1
   		j stringLength
   		
-  	AfterStringLength: # new way to check if the string is empty
+ 
+  		
+  	emptyCheck: # new way to check if the string is empty
         	la $t1, userInput
- 		sub $t2, $t0, $t1
-  		addi $s0, $t2, -1
+ 		j inputEmpty 
         	
-        	beq $s0, $zero, inputEmpty 
+        
         
     
         # loops thru input to check if it is good  
