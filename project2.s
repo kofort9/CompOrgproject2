@@ -26,9 +26,9 @@
         deletespaces:
 		li $t3, 32 # space
 		lb $t1, 0($a0)
-		beq $t3, $t1, delete_first_char
+		beq $t3, $t1, deletefirstspace
 		move $t3, $a0
-		j input_len
+		j Loop
 
 	deletefirstspace:
 		addi $a0, $a0, 1
@@ -103,7 +103,7 @@
 	beqz $s4, printresult
 	beq $s4, $t1, printresult
 	slti $t6, $s4, 58
-	bne $t6, $zero, base10
+	bne $t6, $zero, convertobase10
 	slti $t6, $s4, 82
 	bne $t6, $zero, base28Upper
 	slti $t6, $s4, 114
@@ -123,13 +123,13 @@
 		addi $s4, $s4, -81
 		
 	getresult:
-		beq $s0, $s3, 1digit
-		beq $s0, $s2, 2digit
-		beq $s0, $s1, 3digit
-		beq $s0, $s5, 4digit
+		beq $s0, $s3, onedigit
+		beq $s0, $s2, twodigit
+		beq $s0, $s1, threedigit
+		beq $s0, $s5, fourdigit
     
     
-    	1digit:
+    	onedigit:
 		li $s6, 35937
 		mult $s4, $s6
 		mflo $s7
@@ -138,15 +138,34 @@
 		addi $a0, $a0, 1
 		j convertBaseInput
 		
-	2digit:
+	twodigit:
 		li $s6, 1089
 		mult $s4, $s6
 		mflo $s7
 		addi $s0, $s0, -1
 		addi $a0, $a0, 1
 		j convertBaseInput
+		
+	
+	threedigit:
+		li $s6, 33
+		mult $s4, $s6
+		mflo $s7
+		add $t7, $t7, $s7
+		addi $s0, $s0, -1
+		addi $a0, $a0, 1
+		j convertBaseInput
 
-    # print output
+	fourdigit:
+		li $s6, 1
+		mult $s4, $s6
+		mflo $s7
+		add $t7, $t7, $s7
+
+  	printresult:
+		li $v0, 1
+		move $a0, $t7
+		syscall
     
     
     #end of program
