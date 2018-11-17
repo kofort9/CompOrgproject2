@@ -22,6 +22,17 @@
         
         
         #need to check for input of spaces
+        
+        deletespaces:
+		li $t3, 32 # space
+		lb $t1, 0($a0)
+		beq $t3, $t1, delete_first_char
+		move $t3, $a0
+		j input_len
+
+	deletefirstspace:
+		addi $a0, $a0, 1
+		j deletespaces
   
         
         # conditional to check if the length of entered string is equal to 4 characters
@@ -87,9 +98,17 @@
         
         
         
-     # convert input to decimal
+     convertBaseInput:
+	lb $s4, 0($a0)
+	beqz $s4, printresult
+	beq $s4, $t1, printresult
+	slti $t6, $s4, 58
+	bne $t6, $zero, base10
+	slti $t6, $s4, 82
+	bne $t6, $zero, base28Upper
+	slti $t6, $s4, 114
+	bne $t6, $zero, base28Lower
     
-    # convert imput to base 
     
     
     # print output
