@@ -2,7 +2,7 @@
     userInput: .space 5
     invaildInputLength: .asciiz "Input is too long."
     emptyInput: .asciiz "Input is empty."
-    invalidInput: .asciiz "Invalid base-28 number."
+    invalidInput: .asciiz "Invalid base-28 number." #A-R, 0-9, a-r
 .text
     main:
     
@@ -21,18 +21,36 @@
         
         # conditional to check if the length of entered string is equal to 4 characters
         la $t0, userInput
-	stringLength:
+	Loop:
  		lb $t1, 0($t0)
   		beq $t1, $zero, emptyCheck #  null input 
   		beq $t1, 10, emptyCheck   # newline  input  
   		beq $t1, 32, invalidCheck    # space input
-  		bne $t1, $zero,
-  		bne $t1, 10,
-  		bne $t1, 32
+  		beq $t0, 5, stringTooLong
   		addi $t0, $t0, 1
-  		j stringLength
+  		j Loop
   		
- 
+  	
+  	invalidCheck:
+  		la $t0, userInput
+  		lb $t1, 0($t0)
+  		slti $t6, $t5, 48                 # if char < ascii(48),  input invalid,   ascii(48) = 0  
+		bne $t6, $zero, inputInvalid
+		slti $t6, $t5, 58                 # if char < ascii(58),  input is valid,  ascii(58) = 9  
+		bne $t6, $zero, step_char_forward
+		slti $t6, $t5, 65                 # if char < ascii(65),  input invalid,   ascii(97) = A  
+		bne $t6, $zero, inputInvalid
+		slti $t6, $t5, 82                 # if char < ascii(82),  input is valid,  ascii(82) =  R
+		bne $t6, $zero, step_char_forward
+		slti $t6, $t5, 97                 # if char < ascii(97),  input invalid,   ascii(97) = a
+		bne $t6, $zero, inputInvalid
+		slti $t6, $t5, 114                # if char < ascii(114), input is valid, ascii(114) = r
+		bne $t6, $zero, step_char_forward
+		bgt $t5, 115, inputInvalid   # if char > ascii(115), input invalid,  ascii(115) = s
+
+  		
+  		addi $t0, $t0, 1
+  		j invalidCheck
   		
   	emptyCheck: # new way to check if the string is empty
         	la $t1, userInput
