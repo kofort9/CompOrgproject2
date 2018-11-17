@@ -111,6 +111,23 @@
     
     
     
+    	convertobase10:
+		addi $s4, $s4, -42
+		j getresult
+
+	base28Upper:
+		addi $s4, $s4, -49
+		j getresult
+
+	base28Lower:
+		addi $s4, $s4, -81
+		
+	getresult:
+		beq $s0, $s3, 1digit
+		beq $s0, $s2, 2digit
+		beq $s0, $s1, 3digit
+		beq $s0, $s5, 4digit
+    
     # print output
     
     
